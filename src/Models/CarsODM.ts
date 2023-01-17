@@ -1,19 +1,12 @@
 import {
-  Model,
   Schema,
-  model,
-  models,
-  Types,
-  Document,
 } from 'mongoose';
 import ICar from '../Interfaces/ICar';
+import AbstractODM from './AbstractODM';
 
-export default class CarsODM {
-  private schema: Schema;
-  private model: Model<ICar>;
-
+export default class CarsODM extends AbstractODM<ICar> {
   constructor() {
-    this.schema = new Schema<ICar>({
+    const schema = new Schema<ICar>({
       model: { type: String, required: true },
       year: { type: Number, required: true },
       color: { type: String, required: true },
@@ -21,13 +14,18 @@ export default class CarsODM {
       buyValue: { type: Number, required: false },
       doorsQty: { type: Number, required: false },
       seatsQty: { type: Number, required: false },
+    }, {
+      id: true,
+      toJSON: {
+        transform(_doc, ret) {
+          const Ret = ret;
+          Ret.id = ret._id;
+          delete Ret._id;
+          delete Ret.__v;
+        },
+      },
+      // https://www.mongodb.com/community/forums/t/change-the-id-field-name-and-value/173285
     });
-    this.model = models.Cars || model('Car', this.schema);
-  }
-
-  public async insert(car: ICar): Promise<Document<unknown, any, ICar> & ICar & {
-    _id: Types.ObjectId;
-  }> {
-    return this.model.create({ ...car });
+    super(schema, 'Car');
   }
 }

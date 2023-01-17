@@ -22,6 +22,17 @@ class Car {
     this.doorsQty = carOptions.doorsQty;
     this.seatsQty = carOptions.seatsQty;
   }
+
+  static serializeCar = (ODMResponse: any) => ({
+    id: ODMResponse._id,
+    model: ODMResponse.model,
+    year: ODMResponse.year,
+    color: ODMResponse.color,
+    status: ODMResponse.status || false,
+    buyValue: ODMResponse.buyValue.toFixed(3),
+    doorsQty: ODMResponse.doorsQty,
+    seatsQty: ODMResponse.seatsQty,
+  });
 }
 
 export default Car;

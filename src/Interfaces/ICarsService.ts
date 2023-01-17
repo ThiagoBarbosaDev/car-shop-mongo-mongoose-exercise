@@ -1,6 +1,9 @@
+import CarsODM from '../Models/CarsODM';
 import ICar from './ICar';
-import ICarsServiceResponse from './ICarsServiceResponse';
 
 export default interface ICarsService {
-  insert(ICarBodyParams: ICar): Promise<ICarsServiceResponse> 
+  readonly carODM: CarsODM;
+  insert(ICarBodyParams: ICar): Promise<ICar>;
+  findAll(): Promise<ICar[]> ;
+  findById(id: string): Promise<ICar | null>;
 }

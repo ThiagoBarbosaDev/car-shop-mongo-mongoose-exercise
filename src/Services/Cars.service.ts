@@ -1,23 +1,26 @@
-// import UsersModel from '../database/models/UsersModel';
 import ICar from '../Interfaces/ICar';
 import ICarsService from '../Interfaces/ICarsService';
-import ICarServiceResponse from '../Interfaces/ICarsServiceResponse';
 import CarsODM from '../Models/CarsODM';
 
 export default class CarsService implements ICarsService {
-  insert = async (newCarPayload: ICar): Promise<ICarServiceResponse> => {
-    const carODM = new CarsODM();
-    const ODMResponse = await carODM.insert(newCarPayload);
-    const response = {
-      id: ODMResponse._id,
-      model: ODMResponse.model,
-      year: ODMResponse.year,
-      color: ODMResponse.color,
-      status: ODMResponse.status || false,
-      buyValue: ODMResponse.buyValue.toFixed(3),
-      doorsQty: ODMResponse.doorsQty,
-      seatsQty: ODMResponse.seatsQty,
-    };
-    return response;
+  readonly carODM;
+  constructor() {
+    this.carODM = new CarsODM();
+  }
+
+  insert = async (newCarPayload: ICar): Promise<ICar> => {
+    const ODMResponse = await this.carODM.create(newCarPayload);
+    if (!newCarPayload?.status) { ODMResponse.status = false; } 
+    return ODMResponse;
+  };
+
+  findAll = async (): Promise<ICar[]> => {
+    const ODMResponse = await this.carODM.find();
+    return ODMResponse;
+  };
+
+  findById = async (id: string): Promise<ICar | null> => {
+    const ODMResponse = await this.carODM.findById(id);
+    return ODMResponse;
   };
 }
