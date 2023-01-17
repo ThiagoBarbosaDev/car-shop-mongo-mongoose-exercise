@@ -23,4 +23,10 @@ export default class CarsService implements ICarsService {
     const ODMResponse = await this.carODM.findById(id);
     return ODMResponse;
   };
+
+  update = async (id: string, payload: Record<string, (string | number)>): Promise<any> => {
+    const ODMResponse = await this.carODM.update(id, { ...payload });
+    console.log(ODMResponse);
+    return ODMResponse;
+  };
 }

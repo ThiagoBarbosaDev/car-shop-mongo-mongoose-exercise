@@ -29,9 +29,23 @@ export default class CarsController {
     try {
       const { id } = req.params;
       if (!isValidObjectId(id)) { return res.status(422).json({ message: 'Invalid mongo id' }); }
-      const response = await this.carsService.findById(id);
-      if (!response) { return res.status(404).json({ message: 'Car not found' }); }
-      return res.status(200).json(response);
+      const ODMResponse = await this.carsService.findById(id);
+      if (!ODMResponse) { return res.status(404).json({ message: 'Car not found' }); }
+      return res.status(200).json(ODMResponse);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public async update(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { id } = req.params;
+      const updatePayload = req.body;
+      console.log('controller payload', updatePayload);
+      if (!isValidObjectId(id)) { return res.status(422).json({ message: 'Invalid mongo id' }); }
+      const ODMResponse = await this.carsService.update(id, updatePayload);
+      if (!ODMResponse) { return res.status(404).json({ message: 'Car not found' }); }
+      return res.status(200).json(ODMResponse);
     } catch (error) {
       next(error);
     }

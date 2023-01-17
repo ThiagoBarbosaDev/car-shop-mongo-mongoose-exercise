@@ -6,4 +6,5 @@ export default interface ICarsService {
   insert(ICarBodyParams: ICar): Promise<ICar>;
   findAll(): Promise<ICar[]> ;
   findById(id: string): Promise<ICar | null>;
+  update(id: string, payload: Record<string, (string | number)>): Promise<any>;
 }
