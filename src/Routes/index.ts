@@ -1,8 +1,7 @@
 import carsRouter from './cars.routes';
-
-const placeholder = '';
+import motorcyclesRouter from './motorcycles.routes';
 
 export {
   carsRouter,
-  placeholder,
+  motorcyclesRouter,
 };
